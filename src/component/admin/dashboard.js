@@ -56,9 +56,9 @@ class Dashboard extends Component {
               </DropdownToggle>
               <Collapse isOpen={this.state.isOpenAdmin} navbar>
                 <Nav>
-                  <DropdownItem >
+                  {/* <DropdownItem >
                     <FaRegCircle id='link1' /><Link to="/admin/users" className='link'>Structure</Link>
-                  </DropdownItem>
+                  </DropdownItem> */}
                   <DropdownItem>
                     <FaRegBuilding id='link1' /> <Link to="/admin/units" className='link'>Units</Link>
                   </DropdownItem>
