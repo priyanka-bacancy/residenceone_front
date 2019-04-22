@@ -1,0 +1,46 @@
+{
+  "name": "residenceone_front",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "bootstrap": "^4.3.1",
+    "bootstrap-daterangepicker": "^3.0.3",
+    "classnames": "^2.2.6",
+    "history": "^4.7.2",
+    "jquery": "^3.3.1",
+    "lodash": "^4.17.11",
+    "match-sorter": "^2.3.0",
+    "moment": "^2.24.0",
+    "prop-types": "^15.7.2",
+    "react": "^16.8.5",
+    "react-bootstrap": "^1.0.0-beta.5",
+    "react-bootstrap-daterangepicker": "^4.1.0",
+    "react-bootstrap-sidebar": "0.0.1",
+    "react-dom": "^16.8.3",
+    "react-icons": "^3.5.0",
+    "react-metismenu": "^1.4.0",
+    "react-scripts": "2.1.5",
+    "react-select": "^2.4.2",
+    "react-signature-pad": "0.0.6",
+    "react-signature-pad-wrapper": "^1.2.4",
+    "react-table": "^6.9.2",
+    "react-toggle": "^4.0.2",
+    "reactstrap": "^7.1.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}

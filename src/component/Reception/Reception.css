@@ -1,0 +1,52 @@
+.complete{
+    color: gray;
+    font-size: 22px;
+    text-align: center;
+}
+
+.space{
+    margin-right: 10px;
+}
+
+.btn.btn-success {
+    background: #65cea7;
+    border: 1px solid #3ec291;
+  }
+
+.recovery-item{
+   color: gray;
+}
+
+.signature{
+    border: solid gray;
+    text-align: center;
+    margin-left:35px;
+    margin-right: 35px;
+}
+
+.packet-info{
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    margin-bottom: 20px;
+}
+
+.edit-info{
+    font-family: 'Times New Roman', Times, serif;
+    margin-bottom: 20px;
+}
+
+.packet-output{
+    color: gray;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.packet-id{
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 30px;
+}
+
+#btn{
+    inline-size: 55%;
+}

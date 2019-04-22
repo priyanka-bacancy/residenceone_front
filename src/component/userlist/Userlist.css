@@ -1,0 +1,58 @@
+img {
+    border-radius: 50%;
+  }
+
+Button :active {
+  color: red;
+}
+
+#buttongroup{
+  background-color: gray;
+}
+
+.navLink :active{
+background-color: white;
+}
+
+#dot-icon{
+  background-color: white;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  color: black;
+  border-color: white;
+}
+
+#dropdown-menu{
+  overflow:visible !important;
+  /* z-index: 1; */
+}
+
+.adduser{
+  font-family: 'Times New Roman', Times, serif;
+  color: gray;
+  width: 100%;
+}
+
+#adduser-button{
+inline-size: 20%;
+}
+
+/* .left{
+  width: 90%;
+  float: left;
+}
+
+.right{
+  width: 10%;
+  float: right;
+} */
+.main-heading{
+  font-family: 'Times New Roman', Times, serif;
+  color: gray;
+ 
+}
+
+.column-heading{
+  font-weight: bold;
+  color:rgb(119, 119, 119);
+}
