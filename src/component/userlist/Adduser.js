@@ -18,12 +18,11 @@ class Adduser extends Component {
       isOpenResidenceLinkedData: false,
       isOpenPool: false,
       isOpenNote: false,
-      date: null,
     }
   }
 
   render() {
-    const { lastName, firstName, telephone, email, dateOfBirth, companyName, password, confirmPassword, note, activeDateRange } = this.props.signup;
+    const { lastName, firstName, telephone, email, dateOfBirth, companyName, password, confirmPassword, note, activeDateRange, pool } = this.props.signup;
     return (
       <div className='main-heading'>
         <ModalHeader toggle={this.props.addUserToggle}>
@@ -52,8 +51,10 @@ class Adduser extends Component {
               <DropdownToggle nav onClick={() => { this.setState({ isOpenPersonalDetail: !this.state.isOpenPersonalDetail }) }}>
                 <ModalHeader className='adduser'>Personal data</ModalHeader>
               </DropdownToggle>
+
               <Collapse isOpen={this.state.isOpenPersonalDetail} navbar>
                 <Nav>
+
                   <DropdownItem>
                     <div className='column-heading'>Mobile Number</div>
                     <Input
@@ -64,6 +65,7 @@ class Adduser extends Component {
                       onChange={(e) => this.props.onChange(e)}
                     />
                   </DropdownItem>
+
                   <DropdownItem>
                     <div className='column-heading'>Email address</div>
                     <Input
@@ -74,6 +76,7 @@ class Adduser extends Component {
                       onChange={(e) => this.props.onChange(e)}
                     />
                   </DropdownItem>
+
                   <DropdownItem>
                     <div className='column-heading'>Company Name</div>
                     <Input
@@ -84,12 +87,12 @@ class Adduser extends Component {
                       onChange={(e) => this.props.onChange(e)}
                     />
                   </DropdownItem>
-                  <DropdownItem>
 
+                  <DropdownItem>
                     <div className='column-heading'> Select Date of Birth</div>
                     <DateRangePicker
                       singleDatePicker
-                      onApply={(event,picker) => this.props.handleApply(event,picker)}
+                      onApply={(event, picker) => this.props.handleApply(event, picker)}
                     >
                       <Input
                         type='text'
@@ -100,7 +103,6 @@ class Adduser extends Component {
                   </DropdownItem>
                 </Nav>
               </Collapse>
-
 
               <DropdownToggle nav onClick={() => { this.setState({ isOpenSecurity: !this.state.isOpenSecurity }) }}>
                 <ModalHeader className='adduser'>Security</ModalHeader>
@@ -117,6 +119,7 @@ class Adduser extends Component {
                       onChange={(e) => this.props.onChange(e)}
                     />
                   </DropdownItem>
+
                   <DropdownItem>
                     <div className='column-heading'> Confirm Password</div>
                     <Input
@@ -137,10 +140,8 @@ class Adduser extends Component {
                 <Nav>
                   <DropdownItem>
                     <div className='column-heading'> Active date range</div>
-
                     <DateRangePicker
-                      onApply={(event,picker) => this.props.dateRange(event,picker)}
-                      // onApply={(picker) => this.setState({ date: moment(picker.startDate).format('MM-DD-YYYY'), endDate: moment(picker.endDate.format('MM-DD-YYYY')) })}
+                      onApply={(event, picker) => this.props.dateRange(event, picker)}
                     >
                       <Input
                         type='text'
@@ -148,8 +149,8 @@ class Adduser extends Component {
                         value={activeDateRange}
                       />
                     </DateRangePicker>
-
                   </DropdownItem>
+
                   <DropdownItem>
                     <div className='column-heading'> Position</div>
                     <Select
@@ -159,6 +160,7 @@ class Adduser extends Component {
                       options={this.props.getValue.positionList}
                     />
                   </DropdownItem>
+
                 </Nav>
               </Collapse>
 
@@ -169,7 +171,12 @@ class Adduser extends Component {
                 <Nav>
                   <DropdownItem>
                     <div className='column-heading'>Mannual pool access</div>
-                    <div> <Toggle /></div>
+                    <div>
+                      <Toggle
+                        defaultChecked={pool}
+                        onChange={() => this.props.handleChangePool()}
+                      />
+                    </div>
                   </DropdownItem>
                 </Nav>
               </Collapse>

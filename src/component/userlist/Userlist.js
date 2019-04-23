@@ -14,7 +14,6 @@ import { getToken } from '../../global';
 import { getUserList } from '../api/Api'
 import Adduser from './Adduser';
 import axios from 'axios';
-import moment from 'moment';
 class Userlist extends Component {
   constructor(props) {
     super(props);
@@ -46,7 +45,8 @@ class Userlist extends Component {
         activeFrom: '',
         activeTo: '',
         companyName: '',
-        activeDateRange: ''
+        activeDateRange: '',
+        pool: false
       },
       positionList: [],
       isOpenPersonalDetail: false
@@ -160,7 +160,11 @@ class Userlist extends Component {
     position['selectedPosition'] = selectedPosition
     this.setState({ signup: position })
   }
-
+  handleChangePool() {
+    let pool = this.state.signup;
+    pool['pool'] = !this.state.signup.pool;
+    this.setState({ signup: pool })
+  }
   handleApply(event, picker) {
     let dateOfBirth = { ...this.state.signup };
     dateOfBirth['dateOfBirth'] = picker.startDate.format('YYYY/MM/DD')
@@ -168,11 +172,11 @@ class Userlist extends Component {
   }
   dateRange(event, picker) {
     let activeDateRange = { ...this.state.signup }
-    let startDate = picker.startDate.format('YYYY/MM/DD');
-    let endDate = picker.endDate.format('YYYY/MM/DD')
-    let finaldate = startDate + " - " + endDate
+    let activeFrom = picker.startDate.format('YYYY/MM/DD');
+    let activeTo = picker.endDate.format('YYYY/MM/DD')
+    let finaldate = activeFrom + " - " + activeTo
     activeDateRange['activeDateRange'] = finaldate
-    this.setState({ signup: activeDateRange, startDate, endDate })
+    this.setState({ signup: activeDateRange, activeFrom, activeTo })
   }
   editToggle(row) {
     console.log(row);
@@ -180,7 +184,7 @@ class Userlist extends Component {
   }
 
   addUser() {
-    const { firstName, lastName, email, dateOfBirth, password, telephone, note, selectedPosition, activeTo,activeFrom, companyName } = this.state.signup;
+    const { firstName, lastName, email, dateOfBirth, password, telephone, note, selectedPosition, pool, companyName } = this.state.signup;
     axios.post('http://localhost:8080/api/user/signup',
       {
         firstName: firstName,
@@ -191,13 +195,13 @@ class Userlist extends Component {
         telephone: telephone,
         dateOfBirth: dateOfBirth,
         password: password,
-        familyId:'',
+        familyId: '',
         personStatus: selectedPosition.label,
-        activeFrom: activeFrom,
-        activeTo: activeTo,
-        manualPoolAccess: false,
+        activeFrom:this.state.activeFrom,
+        activeTo: this.state.activeTo,
+        manualPoolAccess: pool,
         note: note,
-        status: false
+        status: '',
       },
       { headers: { token: getToken() } }
     )
@@ -372,6 +376,7 @@ class Userlist extends Component {
               handleApply={(event, picker) => this.handleApply(event, picker)}
               dateRange={(event, picker) => this.dateRange(event, picker)}
               onClickAction={() => this.addUser()}
+              handleChangePool={() => this.handleChangePool()}
             />
 
           </Modal>
