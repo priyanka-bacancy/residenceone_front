@@ -66,9 +66,9 @@ class Recovermodel extends Component {
                 <div>
                   <Input
                     type='text'
-                    name='noteAfterRecovey'
+                    name='noteAfterRecovery'
                     value={this.props.noteAfterRecovery}
-                    onChange={(e) => this.props.onChangeComment(e)}
+                    onChange={(e) => this.props.onChange('noteAfterRecovery',e.target.value)}
                   />
                 </div>
               </div>

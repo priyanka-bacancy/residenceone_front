@@ -14,7 +14,7 @@ const options_number = [
 
 class Packetinmodel extends Component {
   render() {
-const {today,tempNumber,selectedType,selectedNumber,packageType ,comment} = this.props.getValue
+    const { today, tempNumber, selectedType, selectedNumber, packageType, comment } = this.props.getValue
     return (
       <div>
         <div>
@@ -31,7 +31,7 @@ const {today,tempNumber,selectedType,selectedNumber,packageType ,comment} = this
                 <Select
                 name='selectedType'
                 value={selectedType}
-                onChange={this.props.handleChangeType}
+                onChange={(e) => this.props.onChange('selectedType', e)}
                 options={packageType}
               />
             </div>
@@ -40,8 +40,8 @@ const {today,tempNumber,selectedType,selectedNumber,packageType ,comment} = this
                 <Select
                 name='selectedNumber'
                 value={selectedNumber}
-                onChange={this.props.handleChangeNumber}
-                 options={options_number}
+                onChange={(e) => this.props.onChange('selectedNumber', e)}
+                options={options_number}
               />
             </div>
             <div className='packet-info'>
@@ -52,7 +52,7 @@ const {today,tempNumber,selectedType,selectedNumber,packageType ,comment} = this
                 cols='20'
                 name='comment'
                 value={comment}
-                onChange={(e) => this.props.onChangeComment(e)}
+                onChange={(e) => this.props.onChange('comment',e.target.value)}
               />
             </div>
             <div className='packet-info'>

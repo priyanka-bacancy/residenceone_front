@@ -14,6 +14,8 @@ import { getToken } from '../../global';
 import { getUserList } from '../api/Api'
 import Adduser from './Adduser';
 import axios from 'axios';
+
+import _ from 'lodash';
 class Userlist extends Component {
   constructor(props) {
     super(props);
@@ -55,7 +57,6 @@ class Userlist extends Component {
     this.addUserToggle = this.addUserToggle.bind(this);
     this.toggleRow = this.toggleRow.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.handleChangePosition = this.handleChangePosition.bind(this);
   }
 
   componentDidMount() {
@@ -149,17 +150,12 @@ class Userlist extends Component {
     this.setState({ limit: pageSize }, () => this.userList());
   }
 
-  onChange(e) {
-    let signup = this.state.signup;
-    signup[e.target.name] = e.target.value
-    this.setState({ signup });
+  onChange(path, value) {
+    let tempObj = _.cloneDeep(this.state);
+    _.set(tempObj, path, value);
+    this.setState({ ...tempObj })
   }
 
-  handleChangePosition(selectedPosition) {
-    let position = { ...this.state.signup };
-    position['selectedPosition'] = selectedPosition
-    this.setState({ signup: position })
-  }
   handleChangePool() {
     let pool = this.state.signup;
     pool['pool'] = !this.state.signup.pool;
@@ -197,7 +193,7 @@ class Userlist extends Component {
         password: password,
         familyId: '',
         personStatus: selectedPosition.label,
-        activeFrom:this.state.activeFrom,
+        activeFrom: this.state.activeFrom,
         activeTo: this.state.activeTo,
         manualPoolAccess: pool,
         note: note,
@@ -205,11 +201,14 @@ class Userlist extends Component {
       },
       { headers: { token: getToken() } }
     )
+      .then(() => {
+        this.addUserToggle()
+      })
   }
 
 
   render() {
-    const { activeTab, data, modal, signup, selected, selectAll, imagePath } = this.state;
+    const { activeTab, data, modal, selected, selectAll, imagePath } = this.state;
     const columns = [
       {
         Header: "",
@@ -368,11 +367,10 @@ class Userlist extends Component {
         <div>
           <Modal isOpen={modal} toggle={this.addUserToggle} size="lg">
 
-            <Adduser signup={signup}
-              getValue={this.state}
-              handleChangePosition={(e) => this.handleChangePosition(e)}
+            <Adduser
+              getValues={this.state}
               addUserToggle={() => this.addUserToggle()}
-              onChange={(e) => this.onChange(e)}
+              onChange={(path, value) => this.onChange(path, value)}
               handleApply={(event, picker) => this.handleApply(event, picker)}
               dateRange={(event, picker) => this.dateRange(event, picker)}
               onClickAction={() => this.addUser()}

@@ -22,7 +22,7 @@ class Adduser extends Component {
   }
 
   render() {
-    const { lastName, firstName, telephone, email, dateOfBirth, companyName, password, confirmPassword, note, activeDateRange, pool } = this.props.signup;
+    const { lastName, firstName, telephone, email, dateOfBirth, companyName, password, confirmPassword, note, activeDateRange, pool,selectedPosition } = this.props.getValues.signup;
     return (
       <div className='main-heading'>
         <ModalHeader toggle={this.props.addUserToggle}>
@@ -35,7 +35,7 @@ class Adduser extends Component {
             name='firstName'
             value={firstName}
             placeholder='First name'
-            onChange={(e) => this.props.onChange(e)}
+            onChange={(e) => this.props.onChange('signup.firstName',e.target.value)}
           />
           <div className='column-heading'> Last Name</div>
           <Input
@@ -43,7 +43,7 @@ class Adduser extends Component {
             name='lastName'
             value={lastName}
             placeholder='Last name'
-            onChange={(e) => this.props.onChange(e)}
+            onChange={(e) => this.props.onChange('signup.lastName',e.target.value)}
           />
           <Nav className="ml-auto" navbar>
             <UncontrolledDropdown nav inNavbar>
@@ -62,7 +62,7 @@ class Adduser extends Component {
                       name='telephone'
                       value={telephone}
                       placeholder='Mobile number'
-                      onChange={(e) => this.props.onChange(e)}
+                      onChange={(e) => this.props.onChange('signup.telephone',e.target.value)}
                     />
                   </DropdownItem>
 
@@ -73,7 +73,7 @@ class Adduser extends Component {
                       name='email'
                       value={email}
                       placeholder='Email address'
-                      onChange={(e) => this.props.onChange(e)}
+                      onChange={(e) => this.props.onChange('signup.email',e.target.value)}
                     />
                   </DropdownItem>
 
@@ -84,7 +84,7 @@ class Adduser extends Component {
                       name='companyName'
                       value={companyName}
                       placeholder='Company Name'
-                      onChange={(e) => this.props.onChange(e)}
+                      onChange={(e) => this.props.onChange('signup.companyName',e.target.value)}
                     />
                   </DropdownItem>
 
@@ -116,7 +116,7 @@ class Adduser extends Component {
                       name='password'
                       value={password}
                       placeholder='Password'
-                      onChange={(e) => this.props.onChange(e)}
+                      onChange={(e) => this.props.onChange('signup.password',e.target.value)}
                     />
                   </DropdownItem>
 
@@ -127,7 +127,7 @@ class Adduser extends Component {
                       name='confirmPassword'
                       value={confirmPassword}
                       placeholder='Confirm password'
-                      onChange={(e) => this.props.onChange(e)}
+                      onChange={(e) => this.props.onChange('signup.confirmPassword',e.target.value)}
                     />
                   </DropdownItem>
                 </Nav>
@@ -155,9 +155,9 @@ class Adduser extends Component {
                     <div className='column-heading'> Position</div>
                     <Select
                       name='selectedType'
-                      value={this.props.getValue.selectedPosition}
-                      onChange={this.props.handleChangePosition}
-                      options={this.props.getValue.positionList}
+                      value={selectedPosition}
+                      onChange={(e)=>this.props.onChange('signup.selectedPosition',e)}
+                      options={this.props.getValues.positionList}
                     />
                   </DropdownItem>
 

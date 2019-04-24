@@ -17,6 +17,7 @@ import Recovermodel from './Recovermodel';
 import Packetinmodel from './Packetinmodel';
 import Packetout from './Packetout';
 
+import _ from 'lodash';
 class Reception extends Component {
   constructor(props) {
     super(props);
@@ -37,7 +38,7 @@ class Reception extends Component {
       imagePath: '',
       limit: 20,
       modal: false,
-      noteAfterRecovey: '',
+      noteAfterRecovery: '',
 
       packageType: [],
       personDetail: '',
@@ -107,16 +108,10 @@ class Reception extends Component {
     this.setState({ recoverModel: !this.state.recoverModel, recoveryData: row });
   }
 
-  handleChangeType = (selectedType) => {
-    this.setState({ selectedType });
-  }
-
-  handleChangeNumber = (selectedNumber) => {
-    this.setState({ selectedNumber })
-  }
-
-  onChangeComment(e) {
-    this.setState({ [e.target.name]: e.target.value });
+  onChange(path, value) {
+    let tempObj = _.cloneDeep(this.state);
+    _.set(tempObj, path, value);
+    this.setState({ ...tempObj })
   }
 
   onFilteredChange(filtered) {
@@ -437,10 +432,8 @@ class Reception extends Component {
             <Packetinmodel
               getPackageToggle={() => this.getPackageToggle()}
               getValue={this.state}
-              handleChangeType={(e) => this.handleChangeType(e)}
-              handleChangeNumber={(e) => this.handleChangeNumber(e)}
-              onChangeComment={(e) => this.onChangeComment(e)}
               sendNotification={() => this.sendNotification()}
+              onChange={(path, value) => this.onChange(path, value)}
             />
           </Modal>
         </div>
@@ -450,7 +443,7 @@ class Reception extends Component {
               recoverToggle={this.recoverToggle}
               recoveryData={this.state.recoveryData}
               packetRecovered={() => this.packetRecovered()}
-              onChangeComment={(e) => this.onChangeComment(e)}
+              onChange={(path,value) => this.onChange(path,value)}
             />
           </Modal>
         </div>
