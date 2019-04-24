@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 
-import { Button } from 'reactstrap';
 import { Route, Switch, Link } from 'react-router-dom';
-import { Nav, DropdownItem, UncontrolledDropdown, DropdownToggle, Collapse } from 'reactstrap';
+import {Button, Nav, DropdownItem, UncontrolledDropdown, DropdownToggle, Collapse } from 'reactstrap';
 
 import { FaRegCircle, FaRegBuilding, FaUser, FaAtom, FaUsers, FaUserSecret, FaCar, FaFileAlt, FaCalendarAlt, FaRegNewspaper, FaSwimmer, FaRegCheckCircle, FaRegAddressCard, FaCogs, FaGift, FaFlagCheckered } from 'react-icons/fa';
 
@@ -26,11 +25,35 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpen: false,
       isOpenApp: false,
-      isOpenAdmin: false
+      isOpenAdmin: false,
+      admin: [
+        { symbol: <FaRegCircle />, to: '/admin/users', name: 'Structure' },
+        { symbol: <FaRegBuilding />, to: '/admin/units', name: 'Units' },
+        { symbol: <FaUser />, to: '/admin/users', name: 'Users' },
+        { symbol: <FaAtom />, to: '/admin/groups', name: 'Groups' },
+        { symbol: <FaUsers />, to: '/admin/families', name: 'Families' },
+        { symbol: <FaUserSecret />, to: '/admin/owners', name: 'Owners' },
+        { symbol: <FaCar />, to: '/admin/vehicle', name: 'Vehicle' },
+        { symbol: <FaFileAlt />, to: '/admin/document', name: 'Document' },
+        { symbol: <FaCalendarAlt />, to: '/admin/event', name: 'Event' },
+        { symbol: <FaRegNewspaper />, to: '/admin/news', name: 'News Feed' },
+        { symbol: <FaSwimmer />, to: '/admin/pools', name: 'Pools' },
+        { symbol: <FaRegCheckCircle />, to: '/admin/issues', name: 'Issue Tracking' },
+        { symbol: <FaRegAddressCard />, to: '/admin/contact', name: 'Contact' },
+        { symbol: <FaCogs />, to: '/admin/setting', name: 'Setting' },
+      ],
+      application: [
+        { symbol: <FaSwimmer />, to: '/admin/pools', name: 'Pool' },
+        { symbol: <FaGift />, to: '/admin/reception', name: 'Reception' },
+        { symbol: <FaFlagCheckered />, to: '/admin/notification', name: 'Notification' },
+        { symbol: <FaCar />, to: '/admin/vehicle', name: 'Vehicle' },
+        { symbol: <FaRegCheckCircle />, to: '/admin/issues', name: 'Issue Tracking' },
+        { symbol: <FaRegAddressCard />, to: '/admin/contact', name: 'Contact' },
+      ]
     }
   }
+
   componentWillMount() {
     if (!getToken()) {
       history.push('/login');
@@ -48,85 +71,28 @@ class Dashboard extends Component {
         <div id='left' className='main-menu'>
           <div className='head'>LA CADENELLE</div>
 
-          <Nav className="ml-auto" navbar>
-            <UncontrolledDropdown nav inNavbar>
-
-              <DropdownToggle nav caret id='link1' onClick={() => { this.setState({ isOpenAdmin: !this.state.isOpenAdmin }) }}>
+          <Nav className="ml-auto">
+            <UncontrolledDropdown>
+              <DropdownToggle nav caret id='link1' onClick={() => { this.setState({ isOpenAdmin: !this.state.isOpenAdmin, isOpenApp: false }) }}>
                 Administration
               </DropdownToggle>
-              <Collapse isOpen={this.state.isOpenAdmin} navbar>
-                <Nav>
-                  <DropdownItem >
-                    <FaRegCircle id='link1' /><Link to="/admin/users" className='link'>Structure</Link>
-                  </DropdownItem>
+              <Collapse isOpen={this.state.isOpenAdmin}>
+                {this.state.admin.map((admin) =>
                   <DropdownItem>
-                    <FaRegBuilding id='link1' /> <Link to="/admin/units" className='link'>Units</Link>
+                    <b id='link1'>{admin.symbol}</b><Link to={admin.to} className='link'>{admin.name}</Link>
                   </DropdownItem>
-                  <DropdownItem>
-                    <FaUser id='link1' /> <Link to="/admin/users" className='link'>Users</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaAtom id='link1' /> <Link to="/admin/groups" className='link'>Groups</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaUsers id='link1' /> <Link to="/admin/families" className='link'>Families</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaUserSecret id='link1' /> <Link to="/admin/owners" className='link'>Owners</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaCar id='link1' />  <Link to="/admin/vehicle" className='link'>Vehicle</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaFileAlt id='link1' /> <Link to="/admin/pools" className='link'>Document</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaCalendarAlt id='link1' /> <Link to="/admin/event" className='link'>Event</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaRegNewspaper id='link1' /> <Link to="/admin/pools" className='link'>News feed</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaSwimmer id='link1' /> <Link to="/apps/pools" className='link'>Pool</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaRegCheckCircle id='link1' /> <Link to="/admin/pools" className='link'>Issue Tracking</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaRegAddressCard id='link1' /> <Link to="/admin/pools" className='link'>Contact</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaCogs id='link1' /><Link to="/admin/pools" className='link'>Settings</Link>
-                  </DropdownItem>
-
-                </Nav>
+                )}
               </Collapse>
 
-              <DropdownToggle nav caret id='link1' onClick={() => { this.setState({ isOpenApp: !this.state.isOpenApp }) }}>
+              <DropdownToggle nav caret id='link1' onClick={() => { this.setState({ isOpenApp: !this.state.isOpenApp, isOpenAdmin: false }) }}>
                 Application
                 </DropdownToggle>
-              <Collapse isOpen={this.state.isOpenApp} navbar>
-                <Nav>
+              <Collapse isOpen={this.state.isOpenApp}>
+                {this.state.application.map((application) =>
                   <DropdownItem>
-                    <FaSwimmer id='link1' /> <Link to="/apps/pools" className='link'>Pool</Link>
+                    <b id='link1'>{application.symbol}</b><Link to={application.to} className='link'>{application.name}</Link>
                   </DropdownItem>
-                  <DropdownItem>
-                    <FaGift id='link1' /> <Link to="/apps/reception" className='link'>Reception</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaFlagCheckered id='link1' /><Link to="/apps/reception" className='link'>Notification</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaCar id='link1' />  <Link to="/apps/vehicle" className='link'>Vehicle</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaRegCheckCircle id='link1' /> <Link to="/admin/pools" className='link'>Issue Tracking</Link>
-                  </DropdownItem>
-                  <DropdownItem>
-                    <FaRegAddressCard id='link1' /> <Link to="/admin/pools" className='link'>Contact</Link>
-                  </DropdownItem>
-
-                </Nav>
+                )}
               </Collapse>
             </UncontrolledDropdown>
           </Nav>
@@ -134,7 +100,10 @@ class Dashboard extends Component {
         </div>
 
         <div id='right'>
-          <div style={{ textAlign: "right" }}><Button type='submit' name='logout' onClick={this.logout}>Logout</Button></div><hr />
+          <div style={{ textAlign: "right" }}>
+            <Button type='submit' name='logout' onClick={this.logout}>Logout</Button>
+          </div>
+          <hr />
           <div><b><u><Route path='/admin/:id?' component={Heading} /></u> </b></div>
           <div><b> <Route path='/apps/:id?' component={Heading} /></b></div>
           <hr />
