@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import { Route, Switch, Link } from 'react-router-dom';
-import {Button, Nav, DropdownItem, UncontrolledDropdown, DropdownToggle, Collapse } from 'reactstrap';
+import { Button, Nav, DropdownItem, UncontrolledDropdown, DropdownToggle, Collapse } from 'reactstrap';
 
 import { FaRegCircle, FaRegBuilding, FaUser, FaAtom, FaUsers, FaUserSecret, FaCar, FaFileAlt, FaCalendarAlt, FaRegNewspaper, FaSwimmer, FaRegCheckCircle, FaRegAddressCard, FaCogs, FaGift, FaFlagCheckered } from 'react-icons/fa';
 
@@ -18,6 +18,7 @@ import Families from '../families/Families';
 import Reception from '../Reception/Reception';
 import Vehicle from '../vehicle/Vehicle';
 import Owners from '../owners/Owners';
+import Profilepage from '../userlist/Profilepage';
 
 const Heading = ({ match }) => <h1> {match.params.id}</h1>
 
@@ -108,7 +109,8 @@ class Dashboard extends Component {
           <div><b> <Route path='/apps/:id?' component={Heading} /></b></div>
           <hr />
           <Switch>
-            <Route path={`${match.url}/users`} component={Userlist} />
+            <Route exact path={`${match.url}/users`} component={Userlist} />
+            <Route exact path={`${match.url}/users/:id?`} component={Profilepage} />
             <Route path={`${match.url}/pools`} component={Pools} />
             <Route exact path={`${match.url}/units`} component={Units} />
             <Route exact path={`${match.url}/families`} component={Families} />

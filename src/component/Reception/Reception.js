@@ -4,18 +4,18 @@ import './Reception.css';
 
 import axios from 'axios';
 import classnames from 'classnames';
-
 import { FaMobileAlt, FaBirthdayCake, FaEnvelope } from 'react-icons/fa';
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Input } from 'reactstrap';
 import { NavItem, Nav, NavLink, TabContent, TabPane } from 'reactstrap';
+
 import Table from '../commonComponent/Table';
 import { getToken, getId } from '../../global';
 import { getReceptionList, getPacket, getLastPacketIn } from '../api/Api';
 
 import Packetin from './Packetin';
+import Packetout from './Packetout';
 import Recovermodel from './Recovermodel';
 import Packetinmodel from './Packetinmodel';
-import Packetout from './Packetout';
 
 import _ from 'lodash';
 class Reception extends Component {
@@ -443,7 +443,7 @@ class Reception extends Component {
               recoverToggle={this.recoverToggle}
               recoveryData={this.state.recoveryData}
               packetRecovered={() => this.packetRecovered()}
-              onChange={(path,value) => this.onChange(path,value)}
+              onChange={(path, value) => this.onChange(path, value)}
             />
           </Modal>
         </div>

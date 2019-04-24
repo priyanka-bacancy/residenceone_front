@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 
 import './Userlist.css';
 
-import { NavItem, Nav, NavLink, TabContent } from 'reactstrap';
+import { Link } from 'react-router-dom';
+
+import { NavItem, NavLink, Nav, TabContent } from 'reactstrap';
 import { DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { UncontrolledDropdown, Modal } from 'reactstrap';
 import { FaEllipsisV } from 'react-icons/fa';
@@ -16,6 +18,8 @@ import Adduser from './Adduser';
 import axios from 'axios';
 
 import _ from 'lodash';
+import Profilepage from './Profilepage';
+
 class Userlist extends Component {
   constructor(props) {
     super(props);
@@ -51,7 +55,12 @@ class Userlist extends Component {
         pool: false
       },
       positionList: [],
-      isOpenPersonalDetail: false
+      isOpenPersonalDetail: false,
+      isValidPassword: true,
+      passwordMatch: true,
+      profilePage: false,
+      userDetail: '',
+      userListPage: true
     }
     this.handleClick = this.handleClick.bind(this);
     this.addUserToggle = this.addUserToggle.bind(this);
@@ -205,7 +214,25 @@ class Userlist extends Component {
         this.addUserToggle()
       })
   }
+  validatePassword(e) {
+    const password = e.target.value;
+    let isValid = false;
+    var re = /^(?=.*[A-Za-z0-9])[A-Za-z\d@$!%*#?&]{6,}$/;
+    isValid = re.test(String(password).toLowerCase());
+    this.setState({ isValidPassword: isValid });
+  }
+  passwordCheck() {
+    if (this.state.signup.password === this.state.signup.confirmPassword) {
+      this.setState({ passwordMatch: true })
+    }
+    else {
+      this.setState({ passwordMatch: false })
+    }
+  }
 
+  userProfile(row) {
+    this.setState({ userListPage: false, profilePage: true, userDetail: row })
+  }
 
   render() {
     const { activeTab, data, modal, selected, selectAll, imagePath } = this.state;
@@ -250,9 +277,10 @@ class Userlist extends Component {
         Header: 'Name',
         accessor: 'fullName',
         Cell: (row) => {
+          console.log("dsf", row.original.id);
           return (
             <div>
-              <NavLink href='#' onClick={() => this.editToggle(row.original)}>{row.value}</NavLink>
+              <Link to={`/admin/users/${row.original.id}`} onClick={() => this.userProfile(row.original)}>{row.value}</Link>
             </div>
           );
         },
@@ -333,52 +361,59 @@ class Userlist extends Component {
 
     return (
       <div>
-        <div id='buttongroup'>
-          <Nav tabs>
-            <NavItem>
-              <NavLink href="#" className={classnames({ active: activeTab === true })} onClick={() => { this.toggle(true); }}>Active</NavLink>
-            </NavItem>
-            <NavItem>
-              <NavLink href="#" className={classnames({ active: activeTab === false })} onClick={() => { this.toggle(false); }}>Inactive</NavLink>
-            </NavItem>
-          </Nav>
-        </div>
+        {this.state.userListPage ?
+          <div>
+            <div id='buttongroup'>
+              <Nav tabs>
+                <NavItem>
+                  <NavLink href="#" className={classnames({ active: activeTab === true })} onClick={() => { this.toggle(true); }}>Active</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink href="#" className={classnames({ active: activeTab === false })} onClick={() => { this.toggle(false); }}>Inactive</NavLink>
+                </NavItem>
+              </Nav>
+            </div>
 
-        <UncontrolledDropdown>
-          <DropdownToggle id='dot-icon'>
-            <FaEllipsisV />
-          </DropdownToggle>
-          <DropdownMenu >
-            <DropdownItem onClick={() => this.handleClick()} >Add New User</DropdownItem>
-          </DropdownMenu>
-        </UncontrolledDropdown>
+            <UncontrolledDropdown>
+              <DropdownToggle id='dot-icon'>
+                <FaEllipsisV />
+              </DropdownToggle>
+              <DropdownMenu >
+                <DropdownItem onClick={() => this.handleClick()} >Add New User</DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
 
-        <TabContent activeTab={activeTab}>
-          <Table
-            data={data}
-            columns={columns}
-            values={this.state}
-            onPageChange={pageIndex => this.onPageChange(pageIndex)}
-            onPageSizeChange={(pageSize) => this.onPageSizeChange(pageSize)}
-            onFilteredChange={(filtered) => this.onFilteredChange(filtered)}
-          />
-        </TabContent>
+            <TabContent activeTab={activeTab}>
+              <Table
+                data={data}
+                columns={columns}
+                values={this.state}
+                onPageChange={pageIndex => this.onPageChange(pageIndex)}
+                onPageSizeChange={(pageSize) => this.onPageSizeChange(pageSize)}
+                onFilteredChange={(filtered) => this.onFilteredChange(filtered)}
+              />
+            </TabContent>
 
-        <div>
-          <Modal isOpen={modal} toggle={this.addUserToggle} size="lg">
+            <div>
+              <Modal isOpen={modal} toggle={this.addUserToggle} size="lg">
 
-            <Adduser
-              getValues={this.state}
-              addUserToggle={() => this.addUserToggle()}
-              onChange={(path, value) => this.onChange(path, value)}
-              handleApply={(event, picker) => this.handleApply(event, picker)}
-              dateRange={(event, picker) => this.dateRange(event, picker)}
-              onClickAction={() => this.addUser()}
-              handleChangePool={() => this.handleChangePool()}
-            />
+                <Adduser
+                  getValues={this.state}
+                  addUserToggle={() => this.addUserToggle()}
+                  onChange={(path, value) => this.onChange(path, value)}
+                  handleApply={(event, picker) => this.handleApply(event, picker)}
+                  dateRange={(event, picker) => this.dateRange(event, picker)}
+                  onClickAction={() => this.addUser()}
+                  handleChangePool={() => this.handleChangePool()}
+                  validatePassword={(e) => this.validatePassword(e)}
+                  passwordCheck={(e) => this.passwordCheck(e)}
+                />
 
-          </Modal>
-        </div>
+              </Modal>
+            </div>
+          </div>
+          : <Profilepage />}
+
 
       </div>
     )

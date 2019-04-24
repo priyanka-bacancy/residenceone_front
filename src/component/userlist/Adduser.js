@@ -22,7 +22,7 @@ class Adduser extends Component {
   }
 
   render() {
-    const { lastName, firstName, telephone, email, dateOfBirth, companyName, password, confirmPassword, note, activeDateRange, pool,selectedPosition } = this.props.getValues.signup;
+    const { lastName, firstName, telephone, email, dateOfBirth, companyName, password, confirmPassword, note, activeDateRange, pool, selectedPosition } = this.props.getValues.signup;
     return (
       <div className='main-heading'>
         <ModalHeader toggle={this.props.addUserToggle}>
@@ -35,7 +35,7 @@ class Adduser extends Component {
             name='firstName'
             value={firstName}
             placeholder='First name'
-            onChange={(e) => this.props.onChange('signup.firstName',e.target.value)}
+            onChange={(e) => this.props.onChange('signup.firstName', e.target.value)}
           />
           <div className='column-heading'> Last Name</div>
           <Input
@@ -43,10 +43,10 @@ class Adduser extends Component {
             name='lastName'
             value={lastName}
             placeholder='Last name'
-            onChange={(e) => this.props.onChange('signup.lastName',e.target.value)}
+            onChange={(e) => this.props.onChange('signup.lastName', e.target.value)}
           />
           <Nav className="ml-auto" navbar>
-            <UncontrolledDropdown nav inNavbar>
+            <UncontrolledDropdown>
 
               <DropdownToggle nav onClick={() => { this.setState({ isOpenPersonalDetail: !this.state.isOpenPersonalDetail }) }}>
                 <ModalHeader className='adduser'>Personal data</ModalHeader>
@@ -62,7 +62,7 @@ class Adduser extends Component {
                       name='telephone'
                       value={telephone}
                       placeholder='Mobile number'
-                      onChange={(e) => this.props.onChange('signup.telephone',e.target.value)}
+                      onChange={(e) => this.props.onChange('signup.telephone', e.target.value)}
                     />
                   </DropdownItem>
 
@@ -73,7 +73,7 @@ class Adduser extends Component {
                       name='email'
                       value={email}
                       placeholder='Email address'
-                      onChange={(e) => this.props.onChange('signup.email',e.target.value)}
+                      onChange={(e) => this.props.onChange('signup.email', e.target.value)}
                     />
                   </DropdownItem>
 
@@ -84,7 +84,7 @@ class Adduser extends Component {
                       name='companyName'
                       value={companyName}
                       placeholder='Company Name'
-                      onChange={(e) => this.props.onChange('signup.companyName',e.target.value)}
+                      onChange={(e) => this.props.onChange('signup.companyName', e.target.value)}
                     />
                   </DropdownItem>
 
@@ -116,8 +116,10 @@ class Adduser extends Component {
                       name='password'
                       value={password}
                       placeholder='Password'
-                      onChange={(e) => this.props.onChange('signup.password',e.target.value)}
+                      onBlur={(e) => this.props.validatePassword(e)}
+                      onChange={(e) => this.props.onChange('signup.password', e.target.value)}
                     />
+                    {this.props.getValues.isValidPassword ? null : <div><span style={{ color: 'red'}}>Password must be 6 characters long</span></div>}
                   </DropdownItem>
 
                   <DropdownItem>
@@ -127,8 +129,10 @@ class Adduser extends Component {
                       name='confirmPassword'
                       value={confirmPassword}
                       placeholder='Confirm password'
-                      onChange={(e) => this.props.onChange('signup.confirmPassword',e.target.value)}
+                      onBlur={(e) => this.props.passwordCheck(e)}
+                      onChange={(e) => this.props.onChange('signup.confirmPassword', e.target.value)}
                     />
+                    {this.props.getValues.passwordMatch ? null :<div><span style={{ color: 'red' }}>Confirm password and password must be similar </span></div>}
                   </DropdownItem>
                 </Nav>
               </Collapse>
@@ -156,7 +160,7 @@ class Adduser extends Component {
                     <Select
                       name='selectedType'
                       value={selectedPosition}
-                      onChange={(e)=>this.props.onChange('signup.selectedPosition',e)}
+                      onChange={(e) => this.props.onChange('signup.selectedPosition', e)}
                       options={this.props.getValues.positionList}
                     />
                   </DropdownItem>
@@ -202,11 +206,10 @@ class Adduser extends Component {
             </UncontrolledDropdown>
           </Nav>
         </ModalBody>
+        
         <ModalFooter >
-
           <Button color="success" id='adduser-button' onClick={() => this.props.onClickAction()}>Submit</Button>
           <Button color="danger" id='adduser-button' onClick={this.addUserToggle}>Cancel</Button>
-
         </ModalFooter>
       </div>
     )
