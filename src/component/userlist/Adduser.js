@@ -8,7 +8,9 @@ import Select from 'react-select'
 import DateRangePicker from 'react-bootstrap-daterangepicker';
 
 import './Userlist.css';
-
+import _ from 'lodash';
+import axios from 'axios';
+import { getToken } from '../../global';
 class Adduser extends Component {
   constructor(props) {
     super(props);
@@ -18,11 +20,101 @@ class Adduser extends Component {
       isOpenResidenceLinkedData: false,
       isOpenPool: false,
       isOpenNote: false,
+      positionList: [],
+      signup: {
+        firstName: '',
+        lastName: '',
+        telephone: '',
+        email: '',
+        dateOfBirth: '',
+        password: '',
+        confirmPassword: '',
+        note: '',
+        selectedPosition: '',
+        activeFrom: '',
+        activeTo: '',
+        companyName: '',
+        activeDateRange: '',
+        pool: false
+      },
+      isValidPassword: true,
+      passwordMatch: true,
     }
   }
+  onChange(path, value) {
+    let tempObj = _.cloneDeep(this.state);
+    _.set(tempObj, path, value);
+    this.setState({ ...tempObj })
+  }
+  handleApply(event, picker) {
+    let dateOfBirth = { ...this.state.signup };
+    dateOfBirth['dateOfBirth'] = picker.startDate.format('YYYY/MM/DD')
+    this.setState({ signup: dateOfBirth })
+  }
+  dateRange(event, picker) {
+    let activeDateRange = { ...this.state.signup }
+    let activeFrom = picker.startDate.format('YYYY/MM/DD');
+    let activeTo = picker.endDate.format('YYYY/MM/DD')
+    let finaldate = activeFrom + " - " + activeTo
+    activeDateRange['activeDateRange'] = finaldate
+    this.setState({ signup: activeDateRange, activeFrom, activeTo })
+  }
+  handleChangePool() {
+    let pool = this.state.signup;
+    pool['pool'] = !this.state.signup.pool;
+    this.setState({ signup: pool })
+  }
+  validatePassword(e) {
+    const password = e.target.value;
+    let isValid = false;
+    var re = /^(?=.*[A-Za-z0-9])[A-Za-z\d@$!%*#?&]{6,}$/;
+    isValid = re.test(String(password).toLowerCase());
+    this.setState({ isValidPassword: isValid });
+  }
+  passwordCheck() {
+    if (this.state.signup.password === this.state.signup.confirmPassword) {
+      this.setState({ passwordMatch: true })
+    }
+    else {
+      this.setState({ passwordMatch: false })
+    }
+  }
+  addUser() {
+    const { firstName, lastName, email, dateOfBirth, password, telephone, note,activeFrom,activeTo, selectedPosition, pool, companyName } = this.state.signup;
+    axios.post('http://localhost:8080/api/user/signup',
+      {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        companyName: companyName,
+        residenceId: '',
+        telephone: telephone,
+        dateOfBirth: dateOfBirth,
+        password: password,
+        familyId: '',
+        personStatus: selectedPosition.label,
+        activeFrom: activeFrom,
+        activeTo: activeTo,
+        manualPoolAccess: pool,
+        note: note,
+        status: '',
+      },
+      {
+        headers: {
+          token:
+            getToken()
+        }
+      }
+    )
+      .then(() => {
+        this.props.addUserToggle()
+      })
+  }
+
+
 
   render() {
-    const { lastName, firstName, telephone, email, dateOfBirth, companyName, password, confirmPassword, note, activeDateRange, pool, selectedPosition } = this.props.getValues.signup;
+    const { lastName, firstName, telephone, email, dateOfBirth, companyName, password, confirmPassword, note, activeDateRange, pool, selectedPosition } = this.state.signup;
     return (
       <div className='main-heading'>
         <ModalHeader toggle={this.props.addUserToggle}>
@@ -35,7 +127,7 @@ class Adduser extends Component {
             name='firstName'
             value={firstName}
             placeholder='First name'
-            onChange={(e) => this.props.onChange('signup.firstName', e.target.value)}
+            onChange={(e) => this.onChange('signup.firstName', e.target.value)}
           />
           <div className='column-heading'> Last Name</div>
           <Input
@@ -43,7 +135,7 @@ class Adduser extends Component {
             name='lastName'
             value={lastName}
             placeholder='Last name'
-            onChange={(e) => this.props.onChange('signup.lastName', e.target.value)}
+            onChange={(e) => this.onChange('signup.lastName', e.target.value)}
           />
           <Nav className="ml-auto" navbar>
             <UncontrolledDropdown>
@@ -62,7 +154,7 @@ class Adduser extends Component {
                       name='telephone'
                       value={telephone}
                       placeholder='Mobile number'
-                      onChange={(e) => this.props.onChange('signup.telephone', e.target.value)}
+                      onChange={(e) => this.onChange('signup.telephone', e.target.value)}
                     />
                   </DropdownItem>
 
@@ -73,7 +165,7 @@ class Adduser extends Component {
                       name='email'
                       value={email}
                       placeholder='Email address'
-                      onChange={(e) => this.props.onChange('signup.email', e.target.value)}
+                      onChange={(e) => this.onChange('signup.email', e.target.value)}
                     />
                   </DropdownItem>
 
@@ -84,7 +176,7 @@ class Adduser extends Component {
                       name='companyName'
                       value={companyName}
                       placeholder='Company Name'
-                      onChange={(e) => this.props.onChange('signup.companyName', e.target.value)}
+                      onChange={(e) => this.onChange('signup.companyName', e.target.value)}
                     />
                   </DropdownItem>
 
@@ -92,7 +184,7 @@ class Adduser extends Component {
                     <div className='column-heading'> Select Date of Birth</div>
                     <DateRangePicker
                       singleDatePicker
-                      onApply={(event, picker) => this.props.handleApply(event, picker)}
+                      onApply={(event, picker) => this.handleApply(event, picker)}
                     >
                       <Input
                         type='text'
@@ -116,10 +208,10 @@ class Adduser extends Component {
                       name='password'
                       value={password}
                       placeholder='Password'
-                      onBlur={(e) => this.props.validatePassword(e)}
-                      onChange={(e) => this.props.onChange('signup.password', e.target.value)}
+                      onBlur={(e) => this.validatePassword(e)}
+                      onChange={(e) => this.onChange('signup.password', e.target.value)}
                     />
-                    {this.props.getValues.isValidPassword ? null : <div><span style={{ color: 'red'}}>Password must be 6 characters long</span></div>}
+                    {this.state.isValidPassword ? null : <div><span style={{ color: 'red' }}>Password must be 6 characters long</span></div>}
                   </DropdownItem>
 
                   <DropdownItem>
@@ -129,10 +221,10 @@ class Adduser extends Component {
                       name='confirmPassword'
                       value={confirmPassword}
                       placeholder='Confirm password'
-                      onBlur={(e) => this.props.passwordCheck(e)}
-                      onChange={(e) => this.props.onChange('signup.confirmPassword', e.target.value)}
+                      onBlur={(e) => this.passwordCheck(e)}
+                      onChange={(e) => this.onChange('signup.confirmPassword', e.target.value)}
                     />
-                    {this.props.getValues.passwordMatch ? null :<div><span style={{ color: 'red' }}>Confirm password and password must be similar </span></div>}
+                    {this.state.passwordMatch ? null : <div><span style={{ color: 'red' }}>Confirm password and password must be similar </span></div>}
                   </DropdownItem>
                 </Nav>
               </Collapse>
@@ -145,7 +237,7 @@ class Adduser extends Component {
                   <DropdownItem>
                     <div className='column-heading'> Active date range</div>
                     <DateRangePicker
-                      onApply={(event, picker) => this.props.dateRange(event, picker)}
+                      onApply={(event, picker) => this.dateRange(event, picker)}
                     >
                       <Input
                         type='text'
@@ -160,7 +252,7 @@ class Adduser extends Component {
                     <Select
                       name='selectedType'
                       value={selectedPosition}
-                      onChange={(e) => this.props.onChange('signup.selectedPosition', e)}
+                      onChange={(e) => this.onChange('signup.selectedPosition', e)}
                       options={this.props.getValues.positionList}
                     />
                   </DropdownItem>
@@ -178,7 +270,7 @@ class Adduser extends Component {
                     <div>
                       <Toggle
                         defaultChecked={pool}
-                        onChange={() => this.props.handleChangePool()}
+                        onChange={() => this.handleChangePool()}
                       />
                     </div>
                   </DropdownItem>
@@ -197,7 +289,7 @@ class Adduser extends Component {
                       name='note'
                       value={note}
                       placeholder='Note'
-                      onChange={(e) => this.props.onChange(e)}
+                      onChange={(e) => this.onChange('signup.note', e.target.value)}
                     />
                   </DropdownItem>
                 </Nav>
@@ -206,10 +298,10 @@ class Adduser extends Component {
             </UncontrolledDropdown>
           </Nav>
         </ModalBody>
-        
+
         <ModalFooter >
-          <Button color="success" id='adduser-button' onClick={() => this.props.onClickAction()}>Submit</Button>
-          <Button color="danger" id='adduser-button' onClick={this.addUserToggle}>Cancel</Button>
+          <Button color="success" id='adduser-button' onClick={() => this.addUser()}>Submit</Button>
+          <Button color="danger" id='adduser-button' onClick={this.props.addUserToggle}>Cancel</Button>
         </ModalFooter>
       </div>
     )

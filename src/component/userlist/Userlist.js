@@ -37,27 +37,8 @@ class Userlist extends Component {
       selectAll: 0,
       limit: 20,
       editUser: '',
-
-      signup: {
-        firstName: '',
-        lastName: '',
-        telephone: '',
-        email: '',
-        dateOfBirth: '',
-        password: '',
-        confirmPassword: '',
-        note: '',
-        selectedPosition: '',
-        activeFrom: '',
-        activeTo: '',
-        companyName: '',
-        activeDateRange: '',
-        pool: false
-      },
       positionList: [],
       isOpenPersonalDetail: false,
-      isValidPassword: true,
-      passwordMatch: true,
       profilePage: false,
       userDetail: '',
       userListPage: true
@@ -165,69 +146,9 @@ class Userlist extends Component {
     this.setState({ ...tempObj })
   }
 
-  handleChangePool() {
-    let pool = this.state.signup;
-    pool['pool'] = !this.state.signup.pool;
-    this.setState({ signup: pool })
-  }
-  handleApply(event, picker) {
-    let dateOfBirth = { ...this.state.signup };
-    dateOfBirth['dateOfBirth'] = picker.startDate.format('YYYY/MM/DD')
-    this.setState({ signup: dateOfBirth })
-  }
-  dateRange(event, picker) {
-    let activeDateRange = { ...this.state.signup }
-    let activeFrom = picker.startDate.format('YYYY/MM/DD');
-    let activeTo = picker.endDate.format('YYYY/MM/DD')
-    let finaldate = activeFrom + " - " + activeTo
-    activeDateRange['activeDateRange'] = finaldate
-    this.setState({ signup: activeDateRange, activeFrom, activeTo })
-  }
   editToggle(row) {
     console.log(row);
     this.setState({ editUser: row })
-  }
-
-  addUser() {
-    const { firstName, lastName, email, dateOfBirth, password, telephone, note, selectedPosition, pool, companyName } = this.state.signup;
-    axios.post('http://localhost:8080/api/user/signup',
-      {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        companyName: companyName,
-        residenceId: '',
-        telephone: telephone,
-        dateOfBirth: dateOfBirth,
-        password: password,
-        familyId: '',
-        personStatus: selectedPosition.label,
-        activeFrom: this.state.activeFrom,
-        activeTo: this.state.activeTo,
-        manualPoolAccess: pool,
-        note: note,
-        status: '',
-      },
-      { headers: { token: getToken() } }
-    )
-      .then(() => {
-        this.addUserToggle()
-      })
-  }
-  validatePassword(e) {
-    const password = e.target.value;
-    let isValid = false;
-    var re = /^(?=.*[A-Za-z0-9])[A-Za-z\d@$!%*#?&]{6,}$/;
-    isValid = re.test(String(password).toLowerCase());
-    this.setState({ isValidPassword: isValid });
-  }
-  passwordCheck() {
-    if (this.state.signup.password === this.state.signup.confirmPassword) {
-      this.setState({ passwordMatch: true })
-    }
-    else {
-      this.setState({ passwordMatch: false })
-    }
   }
 
   userProfile(row) {
@@ -400,13 +321,7 @@ class Userlist extends Component {
                 <Adduser
                   getValues={this.state}
                   addUserToggle={() => this.addUserToggle()}
-                  onChange={(path, value) => this.onChange(path, value)}
-                  handleApply={(event, picker) => this.handleApply(event, picker)}
-                  dateRange={(event, picker) => this.dateRange(event, picker)}
-                  onClickAction={() => this.addUser()}
-                  handleChangePool={() => this.handleChangePool()}
-                  validatePassword={(e) => this.validatePassword(e)}
-                  passwordCheck={(e) => this.passwordCheck(e)}
+                  userList={() => this.userList()}
                 />
 
               </Modal>

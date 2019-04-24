@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { NavItem, Nav, NavLink, TabContent, TabPane } from 'reactstrap';
 import classnames from 'classnames';
-import Axios from 'axios';
+import axios from 'axios';
 import { getToken } from '../../global';
 class Profilepage extends Component {
   constructor(props) {
@@ -11,14 +11,13 @@ class Profilepage extends Component {
     }
   }
   componentDidMount() {
-    Axios.get(`http://localhost:8080/api/user/detail/${this.props.match.params.id}`,
+    axios.get(`http://localhost:8080/api/user/detail/${this.props.match.params.id}`,
       {
         headers: { token: getToken() }
       })
   }
   toggle() {
-    console.log("ssdfdsgfd");
-
+    console.log("Toggle");
   }
   render() {
     return (
