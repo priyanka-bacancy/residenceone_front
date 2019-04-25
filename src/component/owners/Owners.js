@@ -79,6 +79,8 @@ class Owners extends Component {
   render() {
     return (
       <div>
+         <h2>Owners</h2>
+        <hr />
         <Table
           data={this.state.data}
           columns={columns}

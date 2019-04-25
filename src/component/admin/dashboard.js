@@ -20,8 +20,6 @@ import Vehicle from '../vehicle/Vehicle';
 import Owners from '../owners/Owners';
 import Profilepage from '../userlist/Profilepage';
 
-const Heading = ({ match }) => <h1> {match.params.id}</h1>
-
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -78,8 +76,8 @@ class Dashboard extends Component {
                 Administration
               </DropdownToggle>
               <Collapse isOpen={this.state.isOpenAdmin}>
-                {this.state.admin.map((admin) =>
-                  <DropdownItem>
+                {this.state.admin.map((admin, index) =>
+                  <DropdownItem key={index}>
                     <b id='link1'>{admin.symbol}</b><Link to={admin.to} className='link'>{admin.name}</Link>
                   </DropdownItem>
                 )}
@@ -89,8 +87,8 @@ class Dashboard extends Component {
                 Application
                 </DropdownToggle>
               <Collapse isOpen={this.state.isOpenApp}>
-                {this.state.application.map((application) =>
-                  <DropdownItem>
+                {this.state.application.map((application, index) =>
+                  <DropdownItem key={index}>
                     <b id='link1'>{application.symbol}</b><Link to={application.to} className='link'>{application.name}</Link>
                   </DropdownItem>
                 )}
@@ -104,9 +102,9 @@ class Dashboard extends Component {
           <div style={{ textAlign: "right" }}>
             <Button type='submit' name='logout' onClick={this.logout}>Logout</Button>
           </div>
-          <hr />
-          <div><b><u><Route path='/admin/:id?' component={Heading} /></u> </b></div>
-          <div><b> <Route path='/apps/:id?' component={Heading} /></b></div>
+          {/* <hr /> */}
+          {/* <div><b><u><Route path='/admin/:id?' component={Heading} /></u> </b></div>
+          <div><b> <Route path='/apps/:id?' component={Heading} /></b></div> */}
           <hr />
           <Switch>
             <Route exact path={`${match.url}/users`} component={Userlist} />

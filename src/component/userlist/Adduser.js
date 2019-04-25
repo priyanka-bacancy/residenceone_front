@@ -22,19 +22,19 @@ class Adduser extends Component {
       isOpenNote: false,
       positionList: [],
       signup: {
-        firstName: '',
-        lastName: '',
-        telephone: '',
-        email: '',
-        dateOfBirth: '',
-        password: '',
-        confirmPassword: '',
-        note: '',
-        selectedPosition: '',
-        activeFrom: '',
-        activeTo: '',
-        companyName: '',
-        activeDateRange: '',
+        firstName: this.props.userProfile ? this.props.userProfile.firstName : '',
+        lastName: this.props.userProfile ? this.props.userProfile.lastName : '',
+        telephone: this.props.userProfile ? this.props.userProfile.telephone : '',
+        email: this.props.userProfile ? this.props.userProfile.email : '',
+        dateOfBirth: this.props.userProfile ? this.props.userProfile.dateOfBirth : '',
+        password: this.props.userProfile ? this.props.userProfile.password : '',
+        confirmPassword: this.props.userProfile ? this.props.userProfile.confirmPassword : '',
+        note: this.props.userProfile ? this.props.userProfile.note : '',
+        // selectedPosition:this.props.userProfile ? this.props.userProfile.positions.name : '',
+        activeFrom: this.props.userProfile ? this.props.userProfile.activeFrom : '',
+        activeTo: this.props.userProfile ? this.props.userProfile.activeTo : '',
+        companyName: this.props.userProfile ? this.props.userProfile.companyName : '',
+        activeDateRange: this.props.userProfile ? this.props.userProfile.activeDateRange : '',
         pool: false
       },
       isValidPassword: true,
@@ -42,9 +42,9 @@ class Adduser extends Component {
     }
   }
   onChange(path, value) {
-    let tempObj = _.cloneDeep(this.state);
-    _.set(tempObj, path, value);
-    this.setState({ ...tempObj })
+    let data = _.cloneDeep(this.state);
+    _.set(data, path, value);
+    this.setState({ ...data })
   }
   handleApply(event, picker) {
     let dateOfBirth = { ...this.state.signup };
@@ -80,7 +80,7 @@ class Adduser extends Component {
     }
   }
   addUser() {
-    const { firstName, lastName, email, dateOfBirth, password, telephone, note,activeFrom,activeTo, selectedPosition, pool, companyName } = this.state.signup;
+    const { firstName, lastName, email, dateOfBirth, password, telephone, note, activeFrom, activeTo, selectedPosition, pool, companyName } = this.state.signup;
     axios.post('http://localhost:8080/api/user/signup',
       {
         firstName: firstName,
@@ -92,7 +92,7 @@ class Adduser extends Component {
         dateOfBirth: dateOfBirth,
         password: password,
         familyId: '',
-        personStatus: selectedPosition.label,
+        // personStatus: selectedPosition.label,
         activeFrom: activeFrom,
         activeTo: activeTo,
         manualPoolAccess: pool,
@@ -100,10 +100,7 @@ class Adduser extends Component {
         status: '',
       },
       {
-        headers: {
-          token:
-            getToken()
-        }
+        headers: { token: getToken() }
       }
     )
       .then(() => {
@@ -111,16 +108,17 @@ class Adduser extends Component {
       })
   }
 
-
-
   render() {
     const { lastName, firstName, telephone, email, dateOfBirth, companyName, password, confirmPassword, note, activeDateRange, pool, selectedPosition } = this.state.signup;
+
     return (
       <div className='main-heading'>
+
         <ModalHeader toggle={this.props.addUserToggle}>
-          Add User
-      </ModalHeader>
-        <ModalBody style={{ 'max-height': 'calc(100vh - 210px)', 'overflow-y': 'auto' }}>
+          {this.props.userId ? 'Edit user' : 'Add new user'}
+        </ModalHeader>
+
+        <ModalBody style={{ 'maxHeight': 'calc(100vh - 210px)', 'overflowY': 'auto' }}>
           <div className='column-heading'>First Name</div>
           <Input
             type='text'
@@ -249,12 +247,12 @@ class Adduser extends Component {
 
                   <DropdownItem>
                     <div className='column-heading'> Position</div>
-                    <Select
+                    {/* <Select
                       name='selectedType'
                       value={selectedPosition}
                       onChange={(e) => this.onChange('signup.selectedPosition', e)}
                       options={this.props.getValues.positionList}
-                    />
+                    /> */}
                   </DropdownItem>
 
                 </Nav>

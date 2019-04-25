@@ -371,9 +371,12 @@ class Reception extends Component {
         filterable: false,
       },
     ]
-
     return (
       <div>
+        {this.state.activeTab === 'all' ? <h2>Resident Search</h2> : null}
+        {this.state.activeTab === 'false' ? <h2>Packets received</h2> : null}
+        {this.state.activeTab === 'true' ? <h2>Packets recovered</h2> : null}
+        <hr />
         <div id='buttongroup'>
           <Nav tabs>
             <NavItem>

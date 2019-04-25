@@ -5,8 +5,8 @@ import './Userlist.css';
 import { Link } from 'react-router-dom';
 
 import { NavItem, NavLink, Nav, TabContent } from 'reactstrap';
-import { DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
-import { UncontrolledDropdown, Modal } from 'reactstrap';
+import { DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown } from 'reactstrap';
+import { Modal } from 'reactstrap';
 import { FaEllipsisV } from 'react-icons/fa';
 
 import classnames from 'classnames';
@@ -212,7 +212,7 @@ class Userlist extends Component {
         Cell: (row) => {
           return (
             <div style={{ textAlign: "center" }}>
-              <img alt='Img' height={34} src={imagePath + row.row.picture} />
+              <img alt='Img' className='img' height={34} src={imagePath + row.row.picture} />
             </div>
           )
         },
@@ -284,47 +284,49 @@ class Userlist extends Component {
       <div>
         {this.state.userListPage ?
           <div>
-            <div id='buttongroup'>
-              <Nav tabs>
-                <NavItem>
-                  <NavLink href="#" className={classnames({ active: activeTab === true })} onClick={() => { this.toggle(true); }}>Active</NavLink>
-                </NavItem>
-                <NavItem>
-                  <NavLink href="#" className={classnames({ active: activeTab === false })} onClick={() => { this.toggle(false); }}>Inactive</NavLink>
-                </NavItem>
-              </Nav>
-            </div>
+            <h2>Users</h2>
+            <hr />
+            <div className='box'>
+              <div id='buttongroup'>
+                <Nav tabs>
+                  <NavItem>
+                    <NavLink href="#" className={classnames({ active: activeTab === true })} onClick={() => { this.toggle(true); }}>Active</NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink href="#" className={classnames({ active: activeTab === false })} onClick={() => { this.toggle(false); }}>Inactive</NavLink>
+                  </NavItem>
+                </Nav>
+              </div>
 
-            <UncontrolledDropdown>
-              <DropdownToggle id='dot-icon'>
-                <FaEllipsisV />
-              </DropdownToggle>
-              <DropdownMenu >
-                <DropdownItem onClick={() => this.handleClick()} >Add New User</DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
+              <UncontrolledDropdown>
+                <DropdownToggle id='dot-icon'>
+                  <FaEllipsisV />
+                </DropdownToggle>
+                <DropdownMenu >
+                  <DropdownItem onClick={() => this.handleClick()} >Add New User</DropdownItem>
+                </DropdownMenu>
+              </UncontrolledDropdown>
 
-            <TabContent activeTab={activeTab}>
-              <Table
-                data={data}
-                columns={columns}
-                values={this.state}
-                onPageChange={pageIndex => this.onPageChange(pageIndex)}
-                onPageSizeChange={(pageSize) => this.onPageSizeChange(pageSize)}
-                onFilteredChange={(filtered) => this.onFilteredChange(filtered)}
-              />
-            </TabContent>
-
-            <div>
-              <Modal isOpen={modal} toggle={this.addUserToggle} size="lg">
-
-                <Adduser
-                  getValues={this.state}
-                  addUserToggle={() => this.addUserToggle()}
-                  userList={() => this.userList()}
+              <TabContent activeTab={activeTab}>
+                <Table
+                  data={data}
+                  columns={columns}
+                  values={this.state}
+                  onPageChange={pageIndex => this.onPageChange(pageIndex)}
+                  onPageSizeChange={(pageSize) => this.onPageSizeChange(pageSize)}
+                  onFilteredChange={(filtered) => this.onFilteredChange(filtered)}
                 />
+              </TabContent>
 
-              </Modal>
+              <div>
+                <Modal isOpen={modal} toggle={this.addUserToggle} size="lg">
+                  <Adduser
+                    getValues={this.state}
+                    addUserToggle={() => this.addUserToggle()}
+                    userList={() => this.userList()}
+                  />
+                </Modal>
+              </div>
             </div>
           </div>
           : <Profilepage />}
@@ -332,6 +334,7 @@ class Userlist extends Component {
 
       </div>
     )
+
   }
 }
 export default Userlist;

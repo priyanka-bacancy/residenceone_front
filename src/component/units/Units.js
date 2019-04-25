@@ -103,6 +103,8 @@ class Units extends Component {
   render() {
     return (
       <div>
+        <h2>Units</h2>
+        <hr />
         <Table
           data={this.state.data}
           columns={columns}

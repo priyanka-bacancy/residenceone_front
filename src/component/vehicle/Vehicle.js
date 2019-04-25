@@ -102,6 +102,8 @@ class Vehicle extends Component {
 
     return (
       <div>
+         <h2>Vehicles</h2>
+        <hr />
         <Table
           data={data}
           columns={columns}

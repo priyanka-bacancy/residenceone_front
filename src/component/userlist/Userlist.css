@@ -1,4 +1,4 @@
-img {
+.img {
     border-radius: 50%;
   }
 
@@ -24,7 +24,6 @@ background-color: white;
 
 #dropdown-menu{
   overflow:visible !important;
-  /* z-index: 1; */
 }
 
 .adduser{
@@ -55,4 +54,39 @@ inline-size: 20%;
 .column-heading{
   font-weight: bold;
   color:rgb(119, 119, 119);
+}
+
+.profile{
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+  padding: 4px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.box{
+margin-left: 5px;
+margin-right: 10px;
+width: 100%;
+float:left;
+border: 1px solid white;
+height: auto;
+padding: 4px;
+border-radius: 4px;
+display: block;
+}
+
+.edit-page-heading{
+  font-size: 23px;
+}
+
+.edit-sub-heading{
+  margin-left: 30px;
+  margin-bottom: 20px;
+}
+
+.edit-sub-heading1{
+  margin-left: 60px;
 }

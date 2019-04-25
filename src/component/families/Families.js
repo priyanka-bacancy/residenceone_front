@@ -127,18 +127,19 @@ class Families extends Component {
     const { activeTab, data } = this.state;
     return (
       <div>
-        <div>
-          <div id='buttongroup'>
-            <Nav tabs>
-              <NavItem>
-                <NavLink href="#" className={classnames({ active: activeTab === true })} onClick={() => { this.toggle(true); }}>Active</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink href="#" className={classnames({ active: activeTab === false })} onClick={() => { this.toggle(false); }}>Inactive</NavLink>
-              </NavItem>
-            </Nav>
-          </div>
+        <h2>Families</h2>
+        <hr />
+        <div id='buttongroup'>
+          <Nav tabs>
+            <NavItem>
+              <NavLink href="#" className={classnames({ active: activeTab === true })} onClick={() => { this.toggle(true); }}>Active</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="#" className={classnames({ active: activeTab === false })} onClick={() => { this.toggle(false); }}>Inactive</NavLink>
+            </NavItem>
+          </Nav>
         </div>
+
         <UncontrolledDropdown>
           <DropdownToggle id='dot-icon'>
             <FaEllipsisV />
