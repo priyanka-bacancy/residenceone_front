@@ -122,18 +122,8 @@ class Userlist extends Component {
     });
   }
 
-  async handleClick() {
-    let data = [];
+  handleClick() {
     this.setState({ modal: !this.state.modal })
-    let result = await axios.get(`http://localhost:8080/api/position/list`,
-      {
-        headers: { token: getToken() }
-      });
-
-    for (let i = 0; i < 19; i++) {
-      data[i] = { label: `${result.data.data[i].name}`, value: `${result.data.data[i].id}` }
-    }
-    this.setState({ positionList: data || [] });
   }
 
   onPageSizeChange(pageSize) {
@@ -147,7 +137,6 @@ class Userlist extends Component {
   }
 
   editToggle(row) {
-    console.log(row);
     this.setState({ editUser: row })
   }
 
@@ -198,7 +187,6 @@ class Userlist extends Component {
         Header: 'Name',
         accessor: 'fullName',
         Cell: (row) => {
-          console.log("dsf", row.original.id);
           return (
             <div>
               <Link to={`/admin/users/${row.original.id}`} onClick={() => this.userProfile(row.original)}>{row.value}</Link>

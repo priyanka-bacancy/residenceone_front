@@ -14,6 +14,7 @@
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "react": "^16.8.5",
+    "react-big-calendar": "^0.20.4",
     "react-bootstrap": "^1.0.0-beta.5",
     "react-bootstrap-daterangepicker": "^4.1.0",
     "react-bootstrap-sidebar": "0.0.1",

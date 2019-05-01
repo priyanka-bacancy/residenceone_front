@@ -30,16 +30,32 @@ class Adduser extends Component {
         password: this.props.userProfile ? this.props.userProfile.password : '',
         confirmPassword: this.props.userProfile ? this.props.userProfile.confirmPassword : '',
         note: this.props.userProfile ? this.props.userProfile.note : '',
-        // selectedPosition:this.props.userProfile ? this.props.userProfile.positions.name : '',
+        selectedPosition: this.props.userProfile ? this.props.userProfile.personStatus : '',
         activeFrom: this.props.userProfile ? this.props.userProfile.activeFrom : '',
         activeTo: this.props.userProfile ? this.props.userProfile.activeTo : '',
         companyName: this.props.userProfile ? this.props.userProfile.companyName : '',
-        activeDateRange: this.props.userProfile ? this.props.userProfile.activeDateRange : '',
+        activeDateRange: this.props.activeDateRange ? this.props.activeDateRange : '',
         pool: false
       },
       isValidPassword: true,
       passwordMatch: true,
     }
+  }
+
+  componentDidMount() {
+    this.getPositionList()
+  }
+  async getPositionList() {
+    let data = [];
+    let result = await axios.get(`http://localhost:8080/api/position/list`,
+      {
+        headers: { token: getToken() }
+      });
+
+    for (let i = 0; i < 19; i++) {
+      data[i] = { label: `${result.data.data[i].name}`, value: `${result.data.data[i].id}` }
+    }
+    this.setState({ positionList: data || [] });
   }
   onChange(path, value) {
     let data = _.cloneDeep(this.state);
@@ -57,6 +73,8 @@ class Adduser extends Component {
     let activeTo = picker.endDate.format('YYYY/MM/DD')
     let finaldate = activeFrom + " - " + activeTo
     activeDateRange['activeDateRange'] = finaldate
+    activeDateRange['activeFrom'] = activeFrom
+    activeDateRange['activeTo'] = activeTo
     this.setState({ signup: activeDateRange, activeFrom, activeTo })
   }
   handleChangePool() {
@@ -92,7 +110,7 @@ class Adduser extends Component {
         dateOfBirth: dateOfBirth,
         password: password,
         familyId: '',
-        // personStatus: selectedPosition.label,
+        personStatus: selectedPosition.label,
         activeFrom: activeFrom,
         activeTo: activeTo,
         manualPoolAccess: pool,
@@ -247,12 +265,12 @@ class Adduser extends Component {
 
                   <DropdownItem>
                     <div className='column-heading'> Position</div>
-                    {/* <Select
+                    <Select
                       name='selectedType'
                       value={selectedPosition}
                       onChange={(e) => this.onChange('signup.selectedPosition', e)}
-                      options={this.props.getValues.positionList}
-                    /> */}
+                      options={this.state.positionList}
+                    />
                   </DropdownItem>
 
                 </Nav>

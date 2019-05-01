@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
+
 import _ from 'lodash';
 import axios from 'axios';
 import classnames from 'classnames';
-import { FaEllipsisV } from 'react-icons/fa';
-
+import { FaEllipsisV, FaPaperclip } from 'react-icons/fa';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { DropdownToggle, DropdownMenu, DropdownItem, UncontrolledDropdown, NavItem, Nav, NavLink, TabContent, TabPane } from 'reactstrap';
 
 import { getToken } from '../../global';
 import Adduser from './Adduser';
-
-import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { FaPaperclip } from 'react-icons/fa'
 
 class Profilepage extends Component {
   constructor(props) {
@@ -32,16 +30,24 @@ class Profilepage extends Component {
       ],
       editPage: false,
       copied: false,
+      activeDateRange: ''
     }
   }
   componentDidMount() {
     axios.get(`http://localhost:8080/api/user/detail/${this.props.match.params.id}`,
       { headers: { token: getToken() } })
       .then((res) => {
+        if ((res.data.data.activeFrom !== null) && (res.data.data.activeTo !== null)) {
+          let dateFrom = res.data.data.activeFrom;
+          var finalDateFrom = dateFrom.substring(0, 10)
+          let dateTo = res.data.data.activeTo;
+          var finalDateTo = dateTo.substring(0, 10)
+        }
         this.setState({
           userProfile: res.data.data,
           family: _.get(res.data.data, 'family'),
-          units: _.get(res.data.data, 'family.families_units[0].unit')
+          units: _.get(res.data.data, 'family.families_units[0].unit'),
+          activeDateRange: finalDateFrom + ' - ' + finalDateTo
         })
       })
   }
@@ -51,10 +57,13 @@ class Profilepage extends Component {
   handleClick() {
     this.setState({ editPage: true })
   }
+
+  handicapped() {
+    this.setState({ isHandicapped: '1' })
+  }
   render() {
     return (
       <div>
-
         <div className='edit-page-heading'>User Profile : {this.state.userProfile.fullName}
           <CopyToClipboard text={this.state.userProfile.fullName}
             onCopy={() => this.setState({ copied: true })}>
@@ -95,7 +104,7 @@ class Profilepage extends Component {
 
           <DropdownMenu >
             <DropdownItem onClick={() => this.handleClick()} >Edit profile details</DropdownItem>
-            <DropdownItem>Mark as handicapped</DropdownItem>
+            <DropdownItem onClick={() => this.handicapped()}>Mark as handicapped</DropdownItem>
             <DropdownItem>Mark as inactive</DropdownItem>
             <DropdownItem>Help</DropdownItem>
           </DropdownMenu>
@@ -104,7 +113,7 @@ class Profilepage extends Component {
 
         <TabContent activeTab={this.state.activeTab}>
           <TabPane tabId="Profile">
-            {this.state.editPage ? <Adduser userId={this.props.match.params.id} userProfile={this.state.userProfile} /> : <img src={this.state.userProfile.picture} height={150} alt="profilePicture" className='profile' />}
+            {this.state.editPage ? <Adduser userId={this.props.match.params.id} userProfile={this.state.userProfile} activeDateRange={this.state.activeDateRange} /> : <img src={this.state.userProfile.picture} height={150} alt="profilePicture" className='profile' />}
           </TabPane>
         </TabContent>
 

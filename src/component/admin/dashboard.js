@@ -19,6 +19,7 @@ import Reception from '../Reception/Reception';
 import Vehicle from '../vehicle/Vehicle';
 import Owners from '../owners/Owners';
 import Profilepage from '../userlist/Profilepage';
+import  Events  from '../events/Events';
 
 class Dashboard extends Component {
   constructor(props) {
@@ -35,7 +36,7 @@ class Dashboard extends Component {
         { symbol: <FaUserSecret />, to: '/admin/owners', name: 'Owners' },
         { symbol: <FaCar />, to: '/admin/vehicle', name: 'Vehicle' },
         { symbol: <FaFileAlt />, to: '/admin/document', name: 'Document' },
-        { symbol: <FaCalendarAlt />, to: '/admin/event', name: 'Event' },
+        { symbol: <FaCalendarAlt />, to: '/admin/events', name: 'Event' },
         { symbol: <FaRegNewspaper />, to: '/admin/news', name: 'News Feed' },
         { symbol: <FaSwimmer />, to: '/admin/pools', name: 'Pools' },
         { symbol: <FaRegCheckCircle />, to: '/admin/issues', name: 'Issue Tracking' },
@@ -102,10 +103,6 @@ class Dashboard extends Component {
           <div style={{ textAlign: "right" }}>
             <Button type='submit' name='logout' onClick={this.logout}>Logout</Button>
           </div>
-          {/* <hr /> */}
-          {/* <div><b><u><Route path='/admin/:id?' component={Heading} /></u> </b></div>
-          <div><b> <Route path='/apps/:id?' component={Heading} /></b></div> */}
-          <hr />
           <Switch>
             <Route exact path={`${match.url}/users`} component={Userlist} />
             <Route exact path={`${match.url}/users/:id?`} component={Profilepage} />
@@ -115,6 +112,7 @@ class Dashboard extends Component {
             <Route exact path={`${match.url}/reception`} component={Reception} />
             <Route exact path={`${match.url}/vehicle`} component={Vehicle} />
             <Route exact path={`${match.url}/owners`} component={Owners} />
+            <Route exact path={`${match.url}/events`} component={Events} />
           </Switch>
         </div>
       </div >

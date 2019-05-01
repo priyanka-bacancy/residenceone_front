@@ -7,6 +7,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-table/react-table.css';
 import "react-toggle/style.css";
 
+import "react-big-calendar/lib/css/react-big-calendar.css";
+
 import 'bootstrap/dist/css/bootstrap.css'; //Date range Picker
 import 'bootstrap-daterangepicker/daterangepicker.css'; //Date range Picker
 
