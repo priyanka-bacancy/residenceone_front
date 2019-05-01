@@ -37,17 +37,17 @@ class Profilepage extends Component {
     axios.get(`http://localhost:8080/api/user/detail/${this.props.match.params.id}`,
       { headers: { token: getToken() } })
       .then((res) => {
-        if ((res.data.data.activeFrom !== null) && (res.data.data.activeTo !== null)) {
-          let dateFrom = res.data.data.activeFrom;
-          var finalDateFrom = dateFrom.substring(0, 10)
-          let dateTo = res.data.data.activeTo;
+        let dateFrom = _.get(res.data.data, 'activeFrom');
+        let dateTo = _.get(res.data.data, 'activeTo');
+        if ((dateTo !== null) && (dateFrom !== null)) {
           var finalDateTo = dateTo.substring(0, 10)
+          var finalDateFrom = dateFrom.substring(0, 10)
+          this.setState({ activeDateRange: finalDateFrom + ' - ' + finalDateTo })
         }
         this.setState({
           userProfile: res.data.data,
           family: _.get(res.data.data, 'family'),
           units: _.get(res.data.data, 'family.families_units[0].unit'),
-          activeDateRange: finalDateFrom + ' - ' + finalDateTo
         })
       })
   }
